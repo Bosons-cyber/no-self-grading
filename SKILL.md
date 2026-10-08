@@ -44,8 +44,9 @@ If the repository is out of scope, say so and stop; do not apply a reduced versi
 
 **Prerequisites — set these up before any other phase:**
 
-1. **A protected remote repository**: branch protection on `main`, the user as the only merger, `CODEOWNERS`
-   over the judge files, agent credentials without merge rights. There is no "no remote" tier: without it the
+1. **A protected remote repository** where nothing reaches `main` without the user's approval: branch protection
+   on `main` with review by the code owner and required checks, `CODEOWNERS` over the judge files, and separate agent
+   credentials that cannot bypass those rules. There is no "no remote" tier: without it the
    judged party holds the judge. If it is missing, the first step is to list it in `USER-CHECKLIST.md` and stop
    until the user has done it.
 2. **`vocab.json`**: several agents in separate sessions naming things independently is the main source of concept
@@ -139,8 +140,8 @@ Score the ten dimensions in `references/audit-checklist.md` (0–2 each, max 20)
 Dimension 10 (**judge independence**) is a veto: if it scores 0, the workspace is not deliverable regardless of total.
 Present the findings first: what is missing, what contradicts what, and the proposed fix order.
 Split the fix list in two from the start: **what the agent will build**, and **what only the user can do**
-(`assets/templates/USER-CHECKLIST.md` — remote, branch protection, CODEOWNERS, agent credentials without merge
-rights). Do not start editing before the diagnosis is on the table.
+(`assets/templates/USER-CHECKLIST.md` — remote, branch protection, CODEOWNERS, separate agent credentials
+that cannot bypass the protection). Do not start editing before the diagnosis is on the table.
 
 ### Phase 2 — P0: build the safety net first
 
