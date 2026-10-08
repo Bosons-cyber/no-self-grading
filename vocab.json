@@ -1,0 +1,85 @@
+{
+  "_comment": "本仓库自己的概念词表。这是判据文件：归仓库所有者，改动走 PR、要代码所有者批准。其他文档只引用它，不复制。用法见 references/vocab-interview.md。",
+  "version": "0.1.0",
+  "owner": "Bosons-cyber",
+  "concepts": [
+    {
+      "id": "vocabulary",
+      "label": "概念词表",
+      "alt_labels": ["vocab.json"],
+      "definition": "仓库里唯一一份由所有者定下的核心概念清单：每个概念是什么、不是什么、还有哪些别名、哪些旧名已退役。",
+      "not": [
+        "不是敏感词清单：敏感词清单只在发布前用来查泄露，放在仓库外面，从不进仓库。",
+        "文档里不单独说「词表」，要说清是概念词表还是敏感词清单。"
+      ],
+      "approved": false
+    },
+    {
+      "id": "gate",
+      "label": "闸门",
+      "alt_labels": ["必过检查", "required check"],
+      "definition": "能挡住改动进入 main 的检查：结果不通过，改动就合不进去。",
+      "not": [
+        "不是提示类的计数器或报告：只报数不拦截的，最多算影子模式里的检查，还不是闸门。",
+        "不是 agent 自己跑一遍说通过就算：只认从 main 取脚本、在受保护流程里跑出的结果。"
+      ],
+      "approved": false
+    },
+    {
+      "id": "redsample",
+      "label": "红样本",
+      "alt_labels": ["变异样本"],
+      "definition": "专门给某道闸门准备的、它必须拦住的坏输入；拦不住说明闸门本身坏了。",
+      "not": [
+        "不是普通回归测试：回归测试证明好的输入能过，红样本证明坏的输入过不去。",
+        "不是真实的攻击载荷：只用合成的占位内容，比如编出来的假代号。"
+      ],
+      "approved": false
+    },
+    {
+      "id": "judgefile",
+      "label": "判据文件",
+      "alt_labels": ["判据", "裁判文件"],
+      "definition": "决定 agent 的改动算不算通过的文件：闸门脚本、白名单、红样本、概念词表、.agent-ready.json、CODEOWNERS、工作流文件、规则文件。",
+      "not": [
+        "不是被判的代码和文档本身。",
+        "归所有者，不归写代码的 agent：agent 可以在 PR 里提议改，但不经所有者批准合不进 main。"
+      ],
+      "approved": false
+    },
+    {
+      "id": "loosening",
+      "label": "放宽",
+      "alt_labels": ["改松"],
+      "definition": "对判据文件的任何一处会让更多东西通过的改动：删红样本、加忽略或跳过规则、往白名单加词、降阈值、把闸门退回只报不拦。",
+      "not": [
+        "不是收紧：放宽和收紧分开批，一个 PR 里的修复不能顺带放宽。",
+        "不靠计数器判断：计数器只是提示，每处判据改动是不是放宽，由所有者看完整差异后定。"
+      ],
+      "approved": false
+    },
+    {
+      "id": "mergeable",
+      "label": "能点合并",
+      "alt_labels": [],
+      "definition": "PR 满足全部规则以后，某个账号能点合并按钮。GitHub 上有 write 权限就有。",
+      "not": [
+        "不等于能不经批准进 main：只是能点按钮，本身不扣分。"
+      ],
+      "approved": false
+    },
+    {
+      "id": "unapproved",
+      "label": "能不经批准进 main",
+      "alt_labels": ["合并权"],
+      "definition": "存在任何一条路径，能让所有者本人没看过的改动进入 main；批准不是所有者亲手给的（另一个 agent 批的，或 agent 拿着所有者的登录点的）也算。成立就记第 10 维 0 分。",
+      "not": [
+        "不等于能点合并。",
+        "第 10 维的「通过」只表示 references/remote-platforms.md 当前版本里的四条都查过了、都满足，不表示确实没有路可走；报告里要写明查的是哪一版清单。",
+        "agent 查不到的项记成「没查」，交给所有者确认，不能当成通过。"
+      ],
+      "approved": false
+    }
+  ],
+  "retired": []
+}
