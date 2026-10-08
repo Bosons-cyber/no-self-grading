@@ -1,0 +1,24 @@
+{
+  "_comment": "项目概念词表（TBox）。这是判据文件：归你本人所有，进 CODEOWNERS，agent 只能提议、不能自己改。其他文档只引用它，不复制。生成和用法见技能 references/vocab-interview.md。",
+  "version": "0.1.0",
+  "owner": "<<你本人的 GitHub 账号>>",
+  "concepts": [
+    {
+      "id": "<<概念 id，小写，例如 user>>",
+      "label": "<<代码里用的正式名，例如 user；优先选 LLM 最顺手的那个叫法>>",
+      "alt_labels": ["<<别人可能会叫的别名，例如 account>>", "<<member>>"],
+      "definition": "<<一句话：它是什么>>",
+      "not": [
+        "<<它不是什么，例如：不是 Organization，一个 user 可以属于多个 organization>>"
+      ],
+      "approved": false
+    }
+  ],
+  "retired": [
+    {
+      "id": "<<已退役的 id，例如 customer>>",
+      "retired_in": "<<退役时的版本号，例如 0.2.0>>",
+      "replaced_by": "<<改用哪个概念 id>>"
+    }
+  ]
+}

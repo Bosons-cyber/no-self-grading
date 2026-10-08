@@ -1,0 +1,2 @@
+# 统一用 LF：体检拿文件原始字节算哈希和远端 main 比，Windows 检出改成 CRLF 会天天误报
+* text=auto eol=lf

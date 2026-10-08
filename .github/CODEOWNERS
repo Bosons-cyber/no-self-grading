@@ -1,0 +1,3 @@
+# 这个仓库就是 skill 本身：它给以后每个项目定裁判，所以整个仓库都归所有者审。
+# 配合分支保护里的「Require review from Code Owners」才生效，否则只是通知。
+* @Bosons-cyber

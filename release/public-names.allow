@@ -1,0 +1,614 @@
+# release/public-names.allow —— 可以公开的名字白名单（一行一个，# 后为注释）。
+# 归 CODEOWNERS 管：加词 = 放宽，必须由仓库所有者批。拿不准的不要加，去原文里换成占位符。
+# 判断标准：陌生人看到它，能不能猜出你在哪工作、测过什么目标、你的电脑怎么找？三样都不能 ⇒ 可以加。
+# 初稿由 agent 机械分组生成；第 3 组已由仓库所有者逐条审过。以后新出现的词：能公开就加一行，不能公开就去原文改成占位符。
+
+# ── 1. 建议放行：每一处都是 skill 自己 .py 里的代码标识符（不含注释 / 字符串 / 正则）（120 个）──
+agent_entry                                 # scripts/audit-workspace.py:796
+AGENT_ENTRY_CANDIDATES                      # scripts/audit-workspace.py:86
+alias_hits                                  # scripts/audit-workspace.py:464
+alias_owner                                 # scripts/audit-workspace.py:431
+ALLOW_LEGACY                                # scripts/verify-refs.py:170
+ALLOW_LEGACY_RE                             # scripts/verify-refs.py:201
+ALLOW_REL                                   # release/public-names.py:48
+args                                        # assets/templates/dry-run-script.py:39
+ast                                         # scripts/audit-workspace.py:356
+AttributeError                              # scripts/audit-workspace.py:1015
+BAD_CHARS                                   # scripts/verify-refs.py:140
+BARE_RE                                     # scripts/verify-refs.py:160
+big                                         # scripts/audit-workspace.py:788
+BIG_DIR_MB                                  # scripts/audit-workspace.py:80
+BUILTIN_SYNONYMS                            # scripts/audit-workspace.py:306
+CAMEL_RE                                    # release/public-names.py:57
+cand                                        # scripts/verify-refs.py:344
+cfg                                         # scripts/audit-workspace.py:389
+code_counts                                 # scripts/audit-workspace.py:834
+code_files                                  # scripts/audit-workspace.py:699
+CODE_SUFFIXES                               # release/public-names.py:52
+CONFIG_NAME                                 # scripts/audit-workspace.py:54
+counts                                      # scripts/audit-workspace.py:654
+covered_groups                              # scripts/audit-workspace.py:483
+covered_tokens                              # scripts/audit-workspace.py:458
+data                                        # scripts/verify-refs.py:472
+dead                                        # scripts/verify-refs.py:654
+DEFAULT_SUFFIXES                            # scripts/verify-refs.py:128
+DENY_SKIPPED                                # scripts/verify-refs.py:463
+dir_stats                                   # scripts/audit-workspace.py:787
+doc_counts                                  # scripts/audit-workspace.py:832
+DOC_SUFFIXES                                # scripts/audit-workspace.py:60
+dup_groups                                  # scripts/audit-workspace.py:736
+dup_map                                     # scripts/audit-workspace.py:731
+DUP_MIN_BYTES                               # scripts/audit-workspace.py:81
+errors                                      # scripts/verify-refs.py:573
+EXT_RE                                      # release/public-names.py:56
+EXT_TAIL_RE                                 # scripts/verify-refs.py:141
+failed                                      # scripts/audit-workspace.py:445
+forks                                       # scripts/audit-workspace.py:491
+GO_IMPORT_BLOCK                             # scripts/audit-workspace.py:535
+GO_IMPORT_LINE                              # scripts/audit-workspace.py:536
+gov                                         # scripts/audit-workspace.py:797
+GOV_CANDIDATES                              # scripts/audit-workspace.py:96
+grp                                         # scripts/audit-workspace.py:760
+HANDOFF_CONTAINERS                          # scripts/audit-workspace.py:111
+HASH_MAX_BYTES                              # scripts/audit-workspace.py:82
+hashlib                                     # release/public-names.py:150
+hits                                        # scripts/audit-workspace.py:591
+HUMAN_ENTRY_CANDIDATES                      # scripts/audit-workspace.py:95
+ignore_at                                   # scripts/verify-refs.py:701
+ignore_used                                 # scripts/verify-refs.py:603
+ignored_groups                              # scripts/audit-workspace.py:480
+infos                                       # scripts/verify-refs.py:631
+issues                                      # scripts/audit-workspace.py:404
+JS_IMPORT_PATTERNS                          # scripts/audit-workspace.py:530
+kept                                        # scripts/audit-workspace.py:200
+known                                       # scripts/audit-workspace.py:769
+LETTER_RE                                   # release/public-names.py:58
+line                                        # scripts/verify-refs.py:189
+ln                                          # release/public-names.py:143
+MEMORY_CANDIDATES                           # scripts/audit-workspace.py:97
+MIN_FILES                                   # release/public-names.py:50
+mode                                        # assets/templates/dry-run-script.py:48
+names                                       # scripts/audit-workspace.py:363
+node                                        # scripts/audit-workspace.py:363
+NotImplementedError                         # assets/templates/dry-run-script.py:30
+os                                          # release/public-names.py:105
+OSError                                     # release/public-names.py:127
+parent                                      # release/public-names.py:208
+pkg                                         # scripts/audit-workspace.py:568
+PLATFORM_SIGNATURES                         # scripts/audit-workspace.py:115
+probs                                       # scripts/verify-refs.py:251
+PUBLIC_SYMBOL_PATTERNS                      # scripts/audit-workspace.py:321
+re                                          # release/public-names.py:78
+reasons                                     # scripts/verify-refs.py:438
+RED_SAMPLE                                  # release/public-names.py:49
+rel                                         # scripts/audit-workspace.py:217
+retired_hits                                # scripts/audit-workspace.py:470
+RULE_DIR_CANDIDATES                         # scripts/audit-workspace.py:101
+SCRATCH_DEFAULT                             # scripts/audit-workspace.py:529
+seen                                        # scripts/audit-workspace.py:645
+seen_ids                                    # scripts/audit-workspace.py:415
+seg                                         # release/public-names.py:93
+self                                        # scripts/verify-refs.py:185
+sensitive                                   # scripts/audit-workspace.py:706
+SENSITIVE_STRONG                            # scripts/audit-workspace.py:65
+SENSITIVE_WEAK                              # scripts/audit-workspace.py:73
+skip                                        # scripts/verify-refs.py:287
+SKIP_DIRS                                   # release/public-names.py:51
+SKIP_END                                    # scripts/verify-refs.py:168
+SKIP_END_RE                                 # scripts/verify-refs.py:199
+SKIP_HITS                                   # scripts/verify-refs.py:352
+SKIP_LINE                                   # scripts/verify-refs.py:169
+SKIP_LINE_RE                                # scripts/verify-refs.py:200
+SKIP_START_RE                               # scripts/verify-refs.py:198
+skipped                                     # release/public-names.py:124
+status_count                                # scripts/audit-workspace.py:447
+stem                                        # release/public-names.py:96
+str                                         # release/public-names.py:167
+subprocess                                  # scripts/audit-workspace.py:240
+SUFFIX_LANG                                 # scripts/audit-workspace.py:330
+SyntaxError                                 # scripts/audit-workspace.py:357
+sys                                         # assets/templates/dry-run-script.py:53
+SystemExit                                  # scripts/audit-workspace.py:1017
+terms                                       # scripts/verify-refs.py:455
+text                                        # scripts/audit-workspace.py:629
+TEXT_LIMIT                                  # release/public-names.py:53
+TEXT_SUFFIXES                               # scripts/audit-workspace.py:78
+tok                                         # release/public-names.py:86
+TOKEN_RE                                    # release/public-names.py:55
+tree                                        # scripts/audit-workspace.py:360
+uniq                                        # scripts/audit-workspace.py:646
+unread                                      # scripts/verify-refs.py:572
+URL_RE                                      # scripts/verify-refs.py:142
+VOCAB_DEFAULT_PATHS                         # scripts/audit-workspace.py:301
+VOCAB_SEMVER                                # scripts/audit-workspace.py:302
+warns                                       # scripts/verify-refs.py:613
+word                                        # release/public-names.py:63
+zz                                          # scripts/audit-workspace.py:622
+
+# ── 2. 建议放行：占位符 / 公开平台和通用技术名（沿用哈气米 A、B 组）（43 个）──
+A-Za-z0-9                                   # release/public-names.py:55
+archive                                     # .agent-ready.json:13
+ASCII                                       # references/traps.md:84
+bin                                         # assets/templates/dry-run-script.py:1
+claude                                      # references/audit-checklist.md:99
+codebuddy                                   # SKILL.md:224
+commands                                    # references/platform-mapping.md:102
+CONVENTIONS                                 # .agent-ready.json:9
+copilot-instructions                        # assets/templates/AGENTS.md:8
+egg-info                                    # assets/templates/gitignore:42
+env                                         # assets/templates/dry-run-script.py:1
+GATES                                       # SKILL.md:152
+GBK                                         # references/traps.md:47
+gemini                                      # references/platform-mapping.md:38
+github                                      # .github/CODEOWNERS:0
+HANDOFF                                     # .agent-ready.json:10
+idea                                        # assets/templates/gitignore:48
+instructions                                # .agent-ready.json:10
+JS                                          # references/vocab-interview.md:43
+MEMORY                                      # SKILL.md:224
+origin                                      # references/checkup.md:12
+proposals                                   # .agent-ready.json:2
+protection                                  # assets/templates/USER-CHECKLIST.md:14
+pycache                                     # .gitignore:1
+pytest_cache                                # assets/templates/gitignore:43
+repo                                        # scripts/audit-workspace.py:11
+repos                                       # assets/templates/USER-CHECKLIST.md:14
+RULE                                        # assets/templates/entry-rule.md:10
+RUNBOOK                                     # .agent-ready.json:10
+scratch                                     # SKILL.md:156
+settings                                    # references/platform-mapping.md:38
+SKILL                                       # SKILL.md:0
+STATE                                       # SKILL.md:142
+SUMMARY                                     # .agent-ready.json:10
+to                                          # scripts/audit-workspace.py:11
+TS                                          # references/vocab-interview.md:43
+USER-CHECKLIST                              # SKILL.md:117
+usr                                         # assets/templates/dry-run-script.py:1
+vscode                                      # assets/templates/gitignore:49
+windsurf                                    # references/platform-mapping.md:42
+workflows                                   # .github/workflows/public-names.yml:0
+xxx                                         # .agent-ready.json:13
+YYYY-MM-DD-credential-handling-notes        # scripts/audit-workspace.py:72
+
+# ── 3. 仓库所有者 2026-10-08 逐条审过、确认可以公开（333 个）──
+0-9a-f                                   # scripts/verify-refs.py:510
+0-9a-fA-F                                # scripts/verify-refs.py:228
+12-hex                                   # SKILL.md:175
+4A90E2                                   # assets/templates/agent-docs-maintainer.md:25
+A-Z                                      # release/public-names.py:57
+aaif                                     # references/platform-mapping.md:16
+AAIF                                     # release/public-names.py:16
+Abc123x                                  # release/public-names.py:17
+account                                  # references/vocab-interview.md:52
+actions                                  # .github/workflows/public-names.yml:14
+adr-007                                  # scripts/verify-refs.py:96
+adr007                                   # release/public-names.py:17
+AGENT                                    # .agent-ready.json:9
+agent-account                            # references/audit-checklist.md:124
+agent-docs-maintainer                    # SKILL.md:224
+agent-friendly                           # SKILL.md:77
+agent-ready                              # .agent-ready.json:0
+Self-Grading                              # SKILL.md:9（2026-10-08 改名，原 Agent-Ready）
+no-self-grading                      # SKILL.md:2（2026-10-08 改名）
+agent-tooling                            # SKILL.md:96
+AGENTREADY                               # SKILL.md:175
+agents                                   # .agent-ready.json:9
+AGENTS                                   # SKILL.md:37
+aider.conf                               # references/platform-mapping.md:23
+allow-legacy                             # assets/templates/MEMORY.md:48
+allow-untrusted-range                    # references/traps.md:68
+alt_labels                               # assets/templates/vocab.json:9
+always-applied                           # SKILL.md:32
+alwaysApply                              # assets/templates/entry-rule.md:15
+analysis                                 # assets/templates/STRUCTURE.md:62
+api_key                                  # scripts/audit-workspace.py:71
+append-only                              # assets/templates/GATES.md:27
+applyTo                                  # assets/templates/entry-rule.md:57
+argparse.ArgumentParser                  # assets/templates/dry-run-script.py:34
+args.base                                # scripts/verify-refs.py:536
+args.expect_sha                          # scripts/verify-refs.py:509
+assets                                   # SKILL.md:106
+ast.AsyncFunctionDef                     # scripts/audit-workspace.py:361
+ast.ClassDef                             # scripts/audit-workspace.py:361
+ast.FunctionDef                          # scripts/audit-workspace.py:361
+ast.ImportFrom                           # scripts/audit-workspace.py:565
+audit-checklist                          # SKILL.md:113
+audit-workspace                          # SKILL.md:42
+BASE                                     # references/checkup.md:11
+baselines                                # SKILL.md:73
+BLOCKED                                  # SKILL.md:153
+branches                                 # assets/templates/USER-CHECKLIST.md:14
+build                                    # assets/templates/gitignore:35
+byte-equality                            # SKILL.md:145
+Check-up                                 # SKILL.md:165
+check-up                                 # SKILL.md:179
+checkout                                 # .github/workflows/public-names.yml:14
+checkup                                  # SKILL.md:178
+CI                                       # SKILL.md:45
+CJK                                      # references/traps.md:88
+CLAUDE                                   # .agent-ready.json:9
+CLI                                      # SKILL.md:44
+CODEBUDDY                                # .agent-ready.json:9
+CodeBuddy                                # SKILL.md:33
+CodeBuddy-specific                       # SKILL.md:224
+CODEOWNERS                               # SKILL.md:107
+concept_ignore                           # references/checkup.md:49
+concept_synonyms                         # references/vocab-interview.md:52
+config                                   # references/vocab-interview.md:52
+context.fileName                         # references/platform-mapping.md:38
+CONTRIBUTING                             # scripts/audit-workspace.py:96
+credentials                              # SKILL.md:126
+cross-session                            # SKILL.md:32
+Cross-session                            # SKILL.md:59
+cross-tool                               # SKILL.md:37
+cross-vendor                             # SKILL.md:59
+cursor                                   # SKILL.md:79
+Cursor                                   # references/platform-mapping.md:118
+customer                                 # references/vocab-interview.md:52
+db-password                              # scripts/audit-workspace.py:71
+dead_rules                               # assets/templates/agent-docs-maintainer.md:97
+declared-but-empty                       # SKILL.md:195
+default-selection                        # SKILL.md:219
+deploy                                   # references/traps.md:28
+description_en                           # SKILL.md:5
+description_zh                           # SKILL.md:4
+design                                   # references/traps.md:86
+desktop                                  # assets/templates/gitignore:53
+dest.as_posix                            # references/traps.md:111
+dir-a                                    # assets/templates/STRUCTURE.md:87
+dir-b                                    # assets/templates/STRUCTURE.md:87
+directions-README                        # SKILL.md:224
+displayName                              # SKILL.md:9
+dist                                     # assets/templates/gitignore:34
+dry-run                                  # SKILL.md:157
+DRY-RUN                                  # assets/templates/dry-run-script.py:41
+dry-run-script                           # SKILL.md:157
+DRYRUN                                   # assets/templates/dry-run-script.py:48
+DS_Store                                 # assets/templates/gitignore:51
+duplicate-content                        # SKILL.md:92
+ed25519                                  # scripts/audit-workspace.py:66
+end                                      # assets/templates/MEMORY.md:48
+enforce                                  # SKILL.md:153
+entry                                    # SKILL.md:92
+entry-rule                               # SKILL.md:224
+ENTRY_DOC                                # assets/templates/agent-ready.json:5
+ERROR                                    # SKILL.md:88
+error                                    # scripts/audit-workspace.py:305
+evidence-based                           # SKILL.md:39
+exception                                # scripts/audit-workspace.py:305
+exempt_lines                             # SKILL.md:187
+exempt_ranges                            # SKILL.md:187
+exempt_up                                # SKILL.md:175
+exemptions.ignore_ref_hits               # .agent-ready.json:2
+expect-sha                               # SKILL.md:217
+external-source                          # assets/templates/gitignore:27
+external_roots                           # assets/templates/agent-ready.json:16
+feedback                                 # SKILL.md:223
+File-level                               # SKILL.md:103
+G1-dangling-ref                          # assets/templates/GATES.md:8
+gate                                     # SKILL.md:217
+gate-sentinel                            # SKILL.md:224
+GEMINI                                   # .agent-ready.json:9
+generated                                # scripts/verify-refs.py:84
+getUser                                  # release/public-names.py:15
+getUserAccount                           # scripts/audit-workspace.py:338
+GetUserAccount                           # scripts/audit-workspace.py:338
+git                                      # assets/templates/STRUCTURE.md:17
+GitHub                                   # .github/CODEOWNERS:1
+gitignore                                # assets/templates/STRUCTURE.md:17
+GLOB_AFTER                               # scripts/verify-refs.py:108
+governance                               # SKILL.md:92
+GOVERNANCE_DOT_DIRS                      # scripts/audit-workspace.py:107
+hand-copy                                # SKILL.md:146
+hand-kept                                # SKILL.md:198
+hand-maintain                            # SKILL.md:141
+handoff                                  # SKILL.md:233
+HEAD                                     # scripts/audit-workspace.py:249
+hook                                     # SKILL.md:45
+HTML                                     # scripts/verify-refs.py:174
+HTML_COMMENT_RE                          # scripts/verify-refs.py:179
+HTTPRequest                              # scripts/audit-workspace.py:338
+id_dsa                                   # assets/templates/gitignore:12
+id_ecdsa                                 # assets/templates/gitignore:13
+id_ed25519                               # assets/templates/gitignore:14
+id_rsa                                   # assets/templates/gitignore:11
+ignore_hits                              # SKILL.md:187
+ignore_refs                              # .agent-ready.json:2
+INFO                                     # scripts/verify-refs.py:29
+is-inside-work-tree                      # references/audit-checklist.md:94
+Java                                     # references/vocab-interview.md:43
+JetBrains                                # references/platform-mapping.md:17
+job                                      # scripts/audit-workspace.py:305
+JSON                                     # references/checkup.md:32
+json                                     # scripts/audit-workspace.py:177
+json.JSONDecodeError                     # scripts/audit-workspace.py:180
+judge-independence                       # references/checkup.md:47
+judge_diff                               # SKILL.md:175
+keys                                     # SKILL.md:126
+knowledge                                # assets/templates/STRUCTURE.md:62
+knowledge-base                           # SKILL.md:224
+Kotlin                                   # references/vocab-interview.md:43
+legacy-x-2026-09-09                      # assets/templates/STRUCTURE.md:90
+legacy_allow_files                       # SKILL.md:187
+legacy_patterns                          # .agent-ready.json:7
+lib                                      # scripts/verify-refs.py:85
+LINE_COMMENT_RE                          # scripts/verify-refs.py:180
+LLM                                      # SKILL.md:24
+LLMs                                     # SKILL.md:18
+low-churn                                # SKILL.md:142
+ls-remote                                # assets/templates/USER-CHECKLIST.md:13
+machine-checked                          # SKILL.md:198
+machine-readable                         # SKILL.md:20
+main                                     # .agent-ready.json:13
+main-workspace                           # assets/templates/agent-ready.json:4
+MARK_TAIL                                # scripts/verify-refs.py:178
+member                                   # references/vocab-interview.md:52
+memory                                   # references/audit-checklist.md:99
+message                                  # references/vocab-interview.md:52
+MIN_TRUSTED_FILES                        # scripts/verify-refs.py:126
+MIT                                      # SKILL.md:7
+msg                                      # references/vocab-interview.md:52
+must-fix                                 # SKILL.md:128
+nested-file                              # SKILL.md:57
+new                                      # assets/templates/STRUCTURE.md:104
+no-pager                                 # assets/templates/agent-docs-maintainer.md:161
+node_modules                             # assets/templates/gitignore:44
+non-contradictory                        # SKILL.md:27
+non-negotiable                           # SKILL.md:181
+off-limits                               # SKILL.md:224
+old                                      # assets/templates/STRUCTURE.md:104
+old-name-2024                            # scripts/verify-refs.py:95
+old-vs-new                               # SKILL.md:179
+OpenAI                                   # references/platform-mapping.md:16
+option                                   # references/vocab-interview.md:52
+OrderMapping                             # .agent-ready.json:13
+os.environ                               # release/public-names.py:188
+out                                      # references/traps.md:28
+p.suffix                                 # release/public-names.py:131
+path                                     # assets/templates/STRUCTURE.md:104
+Path.read_text                           # references/traps.md:50
+path.suffix                              # scripts/verify-refs.py:566
+PATH_RE                                  # references/traps.md:88
+per-direction                            # SKILL.md:142
+per-platform                             # SKILL.md:219
+perf-analysis-2026-09-09                 # .agent-ready.json:12
+persona                                  # SKILL.md:195
+platform-agnostic                        # SKILL.md:44
+platform-mapping                         # SKILL.md:38
+Platform-neutral                         # SKILL.md:78
+platform-neutral                         # SKILL.md:216
+platform-specific                        # SKILL.md:46
+PowerShell                               # references/traps.md:98
+pre.stdout                               # scripts/verify-refs.py:238
+preference                               # references/vocab-interview.md:52
+PROJ                                     # references/traps.md:86
+PROJ-RUNTIME                             # references/traps.md:86
+project-agnostic                         # SKILL.md:224
+project_roots                            # references/checkup.md:69
+prompt                                   # references/audit-checklist.md:60
+prompts                                  # SKILL.md:73
+proposals-README                         # SKILL.md:224
+PUBLIC                                   # release/public-names.py:33
+public-names                             # .github/workflows/public-names.yml:0
+py                                       # scripts/verify-refs.py:13
+python-version                           # .github/workflows/public-names.yml:19
+python3                                  # assets/templates/dry-run-script.py:1
+PYTHONIOENCODING                         # references/traps.md:54
+PYTHONUTF8                               # references/traps.md:54
+re-run                                   # SKILL.md:165
+re-verification                          # SKILL.md:219
+Re-verify                                # SKILL.md:40
+read-only                                # SKILL.md:124
+Read-only                                # SKILL.md:216
+README                                   # .agent-ready.json:10
+READMEs                                  # SKILL.md:191
+red                                      # assets/templates/GATES.md:8
+red-line                                 # SKILL.md:152
+red-sample                               # release/public-names.py:197
+references                               # SKILL.md:38
+Referential-integrity                    # SKILL.md:217
+registry                                 # references/traps.md:15
+release                                  # .github/CODEOWNERS:3
+remote-main                              # SKILL.md:217
+replaced_by                              # assets/templates/vocab.json:21
+required_pull_request_reviews.require_code_owner_reviews# assets/templates/USER-CHECKLIST.md:17
+resolve_bases                            # .agent-ready.json:6
+retired_in                               # assets/templates/vocab.json:20
+rev-parse                                # references/audit-checklist.md:94
+ROADMAP                                  # scripts/audit-workspace.py:96
+RooCode                                  # references/platform-mapping.md:17
+root                                     # assets/templates/dry-run-script.py:22
+roots_base                               # assets/templates/agent-docs-maintainer.md:90
+rules                                    # SKILL.md:79
+runs                                     # scripts/verify-refs.py:645
+runs-on                                  # .github/workflows/public-names.yml:12
+runtime-dir                              # assets/templates/gitignore:10
+samples                                  # references/traps.md:28
+scan                                     # references/traps.md:60
+scratch_dirs                             # assets/templates/agent-ready.json:19
+scratch_imports                          # references/checkup.md:31
+scripts                                  # SKILL.md:86
+second-hand                              # SKILL.md:40
+secrets                                  # assets/templates/gitignore:22
+securit                                  # references/traps.md:15
+security                                 # references/traps.md:17
+self-check                               # SKILL.md:32
+self-test                                # .github/workflows/public-names.yml:21
+self.re                                  # scripts/verify-refs.py:192
+sensitive-name                           # SKILL.md:91
+setting                                  # references/vocab-interview.md:52
+setup-python                             # .github/workflows/public-names.yml:17
+sha256                                   # scripts/verify-refs.py:56
+sha256sum                                # SKILL.md:217
+shadow                                   # SKILL.md:153
+shared                                   # SKILL.md:195
+side-effect                              # SKILL.md:224
+Side-effecting                           # SKILL.md:157
+skip-end                                 # assets/templates/STRUCTURE.md:105
+skip-line                                # assets/templates/MEMORY.md:48
+skip-start                               # assets/templates/MEMORY.md:48
+SKIP_DIR_PARTS                           # scripts/audit-workspace.py:56
+skip_dirs                                # .agent-ready.json:4
+skip_prefixes                            # .agent-ready.json:5
+skip_rules                               # SKILL.md:187
+SKIP_START                               # scripts/verify-refs.py:71
+src                                      # .agent-ready.json:13
+SSOT                                     # scripts/audit-workspace.py:31
+state                                    # scripts/audit-workspace.py:782
+STATUS                                   # SKILL.md:142
+status                                   # SKILL.md:233
+STRUCTURE                                # SKILL.md:139
+sub_b                                    # release/public-names.py:14
+subprocess.CompletedProcess              # scripts/verify-refs.py:230
+subprocess.SubprocessError               # scripts/audit-workspace.py:243
+Swift                                    # references/vocab-interview.md:43
+target                                   # assets/templates/gitignore:45
+task                                     # scripts/audit-workspace.py:305
+TBox                                     # assets/templates/vocab.json:2
+teams                                    # .agent-ready.json:11
+tempfile.TemporaryDirectory              # release/public-names.py:194
+templates                                # SKILL.md:106
+ten-dimension                            # SKILL.md:218
+tests                                    # assets/templates/GATES.md:8
+Thing                                    # release/public-names.py:14
+Thumbs                                   # assets/templates/gitignore:52
+tools                                    # .agent-ready.json:11
+traps                                    # SKILL.md:220
+Trial-feedback                           # SKILL.md:223
+ubuntu-latest                            # .github/workflows/public-names.yml:12
+UiPath                                   # references/platform-mapping.md:17
+UnicodeDecodeError                       # references/traps.md:48
+UnicodeEncodeError                       # references/traps.md:49
+user                                     # references/vocab-interview.md:52
+user-checklist                           # SKILL.md:168
+user-owned                               # SKILL.md:107
+UTF-8                                    # references/traps.md:50
+utf-8                                    # references/traps.md:52
+ValueError                               # scripts/audit-workspace.py:357
+vendor                                   # scripts/verify-refs.py:85
+venv                                     # assets/templates/gitignore:40
+VERIFY                                   # SKILL.md:187
+verify-refs                              # .agent-ready.json:2
+VERIFY_RUN_STAMP                         # assets/templates/agent-docs-maintainer.md:89
+version-or-hash                          # SKILL.md:175
+vocab                                    # SKILL.md:105
+vocab-interview                          # SKILL.md:109
+WARN                                     # SKILL.md:217
+write                                    # SKILL.md:224
+WRITE                                    # assets/templates/dry-run-script.py:41
+write-default-config                     # SKILL.md:93
+xx                                       # scripts/verify-refs.py:101
+yml                                      # scripts/verify-refs.py:13
+yy                                       # scripts/verify-refs.py:101
+YYYY-MM-DD                               # assets/templates/GATES.md:8
+
+# ── 4. 建议放行：remote-platforms.md 里的公开平台接口字段 / 命令名（GitHub、GitLab、Gitea、Gitee 官方文档里都查得到）（47 个）──
+access_level
+access_token
+all
+allow_force_push
+api
+approval_rules
+approvals_required
+base64
+branch_protections
+bypass_actors
+code_owner_approval_required
+codeowners
+collaborators
+contents
+DevOps
+docs
+enable_merge_whitelist
+enable_push
+enable_status_check
+fullpath
+gitea
+GitLab
+gitlab
+gitlab-ci
+heads
+members
+merge_access_levels
+merge_whitelist_usernames
+only_allow_merge_if_pipeline_succeeds
+permission
+persist-credentials
+projects
+protected_branches
+pull_request
+pull_request_target
+push_access_levels
+refs
+remote-platforms
+require_code_owner_review
+required_approvals
+required_approving_review_count
+required_pull_request_reviews
+required_pull_request_reviews.require_code_owner_reviews
+required_status_checks
+required_status_checks.contexts
+status_check_contexts
+TOKEN
+# 下面 3 个来自 SKILL.md 的 Scope 段（8525e74），通用英文词
+LLM-assisted
+protected-remote
+sub-agents
+# 下面 3 个来自 public-names.yml 的 GitHub Actions 公开表达式和检出目录名
+github.event.pull_request.head
+github.event_name
+pr
+
+# ── 5. 仓库所有者的公开 GitHub 用户名（CODEOWNERS、LICENSE 里用）──
+Bosons-cyber
+
+# ── 6. MIT 许可证标准文本里的词（LICENSE）（46 个）──
+ACTION
+and
+AND
+ANY
+ARISING
+AUTHORS
+BUT
+CLAIM
+CONNECTION
+CONTRACT
+COPYRIGHT
+DAMAGES
+DEALINGS
+EVENT
+EXPRESS
+FITNESS
+FOR
+FROM
+HOLDERS
+IMPLIED
+INCLUDING
+KIND
+LIABILITY
+LIABLE
+LICENSE
+LIMITED
+MERCHANTABILITY
+NONINFRINGEMENT
+NOT
+or
+OTHER
+OTHERWISE
+OUT
+PARTICULAR
+PROVIDED
+PURPOSE
+SHALL
+SOFTWARE
+THE
+TORT
+USE
+WARRANTIES
+WARRANTY
+WHETHER
+WITH
+WITHOUT
+
+# .gitattributes 注释里的通用技术词
+CRLF

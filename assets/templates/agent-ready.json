@@ -1,0 +1,20 @@
+{
+  "_comment": "no-self-grading / verify-refs.py 配置。省略字段即用默认值。用 `python verify-refs.py --write-default-config` 生成起步版。",
+  "scan": {
+    "dirs": ["docs", "<<main-workspace>>"],
+    "files": ["README.md", "<<ENTRY_DOC>>.md"],
+    "suffixes": [".md", ".txt"]
+  },
+  "skip_dirs": [],
+  "skip_prefixes": [
+    "<<归档目录>>/",
+    "<<冻结快照目录>>/",
+    "<<生成物目录>>/",
+    "<<外部只读依赖>>/"
+  ],
+  "resolve_bases": [],
+  "external_roots": [],
+  "legacy_patterns": [],
+  "ignore_refs": [],
+  "scratch_dirs": ["scratch"]
+}

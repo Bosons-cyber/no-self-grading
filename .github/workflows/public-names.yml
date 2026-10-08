@@ -1,0 +1,35 @@
+# 本 skill 仓库自己的「能不能公开」闸门：每个 PR、每次推送到 main 都跑。
+# 要在受保护 main 的必过检查里登记 job 名 public-names，否则红了也能合。
+#
+# PR 用 pull_request_target：本文件、脚本、白名单都取基线（main）那份，PR 的内容检出到 pr/ 只当数据扫，
+# 不执行 PR 里的任何东西。这样 PR 改了脚本或白名单，也影响不了本次判定。
+# 要加白名单词：先单独提一个只改白名单的 PR（归 CODEOWNERS 批），合进去之后正文 PR 才会变绿。
+name: public-names
+on:
+  pull_request_target:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  public-names:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4          # pull_request_target 下检出的是基线，不是 PR
+        with:
+          persist-credentials: false
+      - if: github.event_name == 'pull_request_target'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: pr
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # 先跑红样本：假代号必须被拦住，拦不住说明闸门本身坏了
+      - run: python release/public-names.py --self-test
+      - if: github.event_name == 'pull_request_target'
+        run: python release/public-names.py --root pr --allow release/public-names.allow
+      - if: github.event_name == 'push'
+        run: python release/public-names.py

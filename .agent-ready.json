@@ -1,0 +1,15 @@
+{
+  "_comment": "本 skill 仓库自己的 verify-refs 配置（判据层，改动走 proposals/ 并由用户批准）。ignore_refs 里全是「目标项目里的文件名」或文档中的举例，在本仓库里本来就不存在。每条的命中数和位置见 --json 的 exemptions.ignore_ref_hits，基线按规则逐条记。",
+  "scan": {"dirs": [], "files": [], "suffixes": [".md", ".txt"]},
+  "skip_dirs": [],
+  "skip_prefixes": [],
+  "resolve_bases": [],
+  "legacy_patterns": [],
+  "ignore_refs": [
+    "AGENT.md", "agents.md", "CLAUDE.md", "CODEBUDDY.md", "CONVENTIONS.md", "GEMINI.md",
+    "HANDOFF.md", "instructions.md", "README.md", "RUNBOOK.md", "SUMMARY.md",
+    "proposals/README.md", "teams/README.md", "tools/verify-refs.py",
+    "perf-analysis-2026-09-09.md",
+    "a/x.md", "b/x.md", "archive/xxx.md", "src/main.p", "OrderMapping.java"
+  ]
+}
