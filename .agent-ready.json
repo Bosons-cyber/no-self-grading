@@ -7,7 +7,7 @@
   "legacy_patterns": [],
   "ignore_refs": [
     "AGENT.md", "agents.md", "CLAUDE.md", "CODEBUDDY.md", "CONVENTIONS.md", "GEMINI.md",
-    "HANDOFF.md", "instructions.md", "README.md", "RUNBOOK.md", "SUMMARY.md",
+    "HANDOFF.md", "instructions.md", "RUNBOOK.md", "SUMMARY.md",
     "proposals/README.md", "teams/README.md", "tools/verify-refs.py",
     "perf-analysis-2026-09-09.md",
     "a/x.md", "b/x.md", "archive/xxx.md", "src/main.p", "OrderMapping.java"
