@@ -554,13 +554,30 @@ TOKEN
 LLM-assisted
 protected-remote
 sub-agents
-# 下面 6 个是 GitHub Actions 公开表达式和检出目录名
+# 下面是 GitHub 常见词汇
 github.event.pull_request.head
 github.event_name
 base
 github.event.pull_request.base
 vocab-issues
 pr
+EXPECTED
+expected-count
+files
+GH_TOKEN
+github.event
+github.event.label
+github.event.pull_request
+github.event.pull_request.changed_files
+github.event.sender
+LABEL
+NUM
+pages
+pull-requests
+pulls
+REPO
+SENDER
+changed
 
 # ── 5. 仓库所有者的公开 GitHub 用户名（CODEOWNERS、LICENSE 里用）──
 Bosons-cyber
