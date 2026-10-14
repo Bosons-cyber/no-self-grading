@@ -1,6 +1,6 @@
 {
   "_comment": "本仓库自己的概念词表。这是判据文件：归仓库所有者，改动走 PR、要代码所有者批准。其他文档只引用它，不复制。用法见 references/vocab-interview.md。",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "owner": "Bosons-cyber",
   "concepts": [
     {
@@ -81,5 +81,84 @@
       "approved": false
     }
   ],
-  "retired": []
+  "retired": [],
+  "judgefiles": {
+    "_comment": "判据文件（concept: judgefile）的路径清单，供 PR 检查按路径标「需细看」。只做提示、宁多报不漏报；某处改动算不算放宽，仍由所有者看完整差异后定（见 concept: loosening）。改这份清单本身也算改判据文件。",
+    "match": "路径先统一大小写和斜杠再比对；以 / 结尾的是目录，目录下新加的文件也算；改名或移动时新旧两个路径都算。",
+    "unit": "按文件计：一个 PR 最多碰 1 个判据文件；超过就拆开，或由所有者亲手加 multi-sensitive 标签放行（加标签的人须是所有者账号，标签之后有新提交即作废）。",
+    "paths": [
+      ".github/workflows/",
+      ".github/CODEOWNERS",
+      "vocab.json",
+      "tests/red/",
+      "release/public-names.allow",
+      "release/public-names.py",
+      "scripts/audit-workspace.py",
+      "scripts/verify-refs.py",
+      ".agent-ready.json",
+      "assets/templates/vocab.json",
+      "assets/templates/agent-ready.json",
+      "assets/templates/GATES.md",
+      "assets/templates/entry-rule.md"
+    ]
+  },
+  "thresholds": {
+    "_comment": "闸门脚本里的数值阈值及其方向。stricter 写明往哪边改算收紧；反方向的改动按放宽候选标出。方向是哈基米按代码读出来的，approved=false，待所有者确认。新增阈值不写方向的，一律当「需细看」。",
+    "items": [
+      {
+        "id": "MIN_FILES",
+        "file": "release/public-names.py",
+        "value": 5,
+        "stricter": "larger",
+        "gate": true,
+        "note": "扫到的文件少于此数时判扫描范围不可信",
+        "approved": false
+      },
+      {
+        "id": "TEXT_LIMIT",
+        "file": "release/public-names.py",
+        "value": 2000000,
+        "stricter": "larger",
+        "gate": true,
+        "note": "单文件读取上限，调小会让更多内容不被扫描；方向待确认",
+        "approved": false
+      },
+      {
+        "id": "MIN_TRUSTED_FILES",
+        "file": "scripts/verify-refs.py",
+        "value": 5,
+        "stricter": "larger",
+        "gate": true,
+        "note": "同上，扫描范围可信的最小文件数",
+        "approved": false
+      },
+      {
+        "id": "BIG_DIR_MB",
+        "file": "scripts/audit-workspace.py",
+        "value": 30,
+        "stricter": "smaller",
+        "gate": false,
+        "note": "体检报告用，不拦截",
+        "approved": false
+      },
+      {
+        "id": "DUP_MIN_BYTES",
+        "file": "scripts/audit-workspace.py",
+        "value": 256,
+        "stricter": "smaller",
+        "gate": false,
+        "note": "体检报告用，不拦截",
+        "approved": false
+      },
+      {
+        "id": "HASH_MAX_BYTES",
+        "file": "scripts/audit-workspace.py",
+        "value": 2097152,
+        "stricter": "larger",
+        "gate": false,
+        "note": "体检报告用，不拦截",
+        "approved": false
+      }
+    ]
+  }
 }
