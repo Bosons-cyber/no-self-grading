@@ -9,7 +9,7 @@
 用法
     python check-judgefiles.py --vocab base/vocab.json --paths 改动清单.txt \
         --action synchronize --sender 某账号 [--label 标签名] [--owner Bosons-cyber] \
-        [--expected-count N]
+        (--expected-count N | --local)
     python check-judgefiles.py --red base/tests/red/judgefiles.json --target pr/scripts/check-judgefiles.py
 
 路径清单
@@ -22,7 +22,8 @@
     - 其余事件（新开、推新提交、重新打开、去标签……）一律不通过，不管 PR 上现在挂着什么标签。
     推新提交会产生新的头提交，之前那次通过不会带过来；所有者要先去掉再重新加一次标签。
 
-CI 必须传 --expected-count（取 PR 的 changed_files）；本地自用可省略。
+默认必须传 --expected-count（取 PR 的 changed_files），缺了按输入无效退出 2；
+本地自用要显式加 --local 跳过条数核对，两者同时给也按输入无效退出 2。
 路径清单为空、不是列表（如接口报错对象）、列表项类型不对，一律按输入无效退出 2，不放行。
 
 退出码：0 = 通过；1 = 不通过（--red 时为有样本没过）；2 = 输入无效。
@@ -118,6 +119,8 @@ def run_red(red: Path, target: Path) -> int:
                    "--label", c.get("label", "")]
             if "count" in c:
                 cmd += ["--expected-count", str(c["count"])]
+            if c.get("local"):
+                cmd += ["--local"]
             r = subprocess.run(cmd, capture_output=True, text=True)
             got = r.returncode == 0
             good = got == c["pass"]
@@ -136,7 +139,8 @@ def main() -> int:
     p.add_argument("--sender", default="", help="触发事件的账号")
     p.add_argument("--label", default="", help="labeled / unlabeled 事件里的标签名")
     p.add_argument("--owner", default="Bosons-cyber", help="可放行的所有者账号")
-    p.add_argument("--expected-count", type=int, help="PR 的 changed_files；CI 必须传，条数对不上或超过 3000 就不通过")
+    p.add_argument("--expected-count", type=int, help="PR 的 changed_files；默认必须传，条数对不上或超过 3000 就不通过")
+    p.add_argument("--local", action="store_true", help="本地自用：跳过条数核对（不能和 --expected-count 同时用）")
     p.add_argument("--red", help="红样本文件（tests/red/judgefiles.json）")
     p.add_argument("--target", help="配合 --red：被测的脚本，默认测自己")
     a = p.parse_args()
@@ -144,6 +148,12 @@ def main() -> int:
         return run_red(Path(a.red), Path(a.target or __file__))
     if not (a.vocab and a.paths):
         p.error("需要 --vocab 和 --paths")
+    if a.local and a.expected_count is not None:
+        print("输入无效：--local 和 --expected-count 不能同时用", file=sys.stderr)
+        return 2
+    if not a.local and a.expected_count is None:
+        print("输入无效：缺 --expected-count（PR 的改动文件数）；本地自用请显式加 --local", file=sys.stderr)
+        return 2
     try:
         rules = json.loads(Path(a.vocab).read_text(encoding="utf-8"))["judgefiles"]["paths"]
         raw = Path(a.paths).read_text(encoding="utf-8")
