@@ -176,6 +176,10 @@ def run(root: Path, list_only: bool = False, quiet: bool = False,
     if files < MIN_FILES:
         print(f"🛑 拒绝给结论：只扫到 {files} 个文件（< {MIN_FILES}），根目录多半不对：{root}")
         return 2, set()
+    if skipped and not list_only:                    # 跳过的文件没查过，不能当它干净：一律判失败
+        print(f"🛑 拒绝给结论：{len(skipped)} 个文件读不了或太大（> {TEXT_LIMIT} 字节、非 UTF-8 或读取出错），未查 —— "
+              + ", ".join(skipped[:10]))
+        return 2, set()
     if list_only:
         for w in sorted(hits, key=str.lower):
             f, n = hits[w][0]
@@ -217,6 +221,14 @@ def red_hash_cases(root: Path) -> list[dict]:
     return out
 
 
+def skip_list(root: Path) -> list[dict]:
+    """读「跳过即失败」红样本；文件内容由自测现场生成，不提交大文件或乱码文件。"""
+    p = root / "tests/red/public-names.json"
+    if not p.is_file():
+        return []
+    return json.loads(p.read_text(encoding="utf-8")).get("skips", [])
+
+
 def self_test(root: Path, allow_path: Path | None = None) -> int:
     cases = red_hash_cases(root)
     with tempfile.TemporaryDirectory() as td:
@@ -225,7 +237,23 @@ def self_test(root: Path, allow_path: Path | None = None) -> int:
         (dst / "red-sample.md").write_text(f"see `{RED_SAMPLE}` in the example\n"
                                             + "".join(f"see `{c['word']}` here\n" for c in cases), encoding="utf-8")
         rc, unknown = run(dst, quiet=True, allow_path=allow_path)
-    bad = 0
+    skips = skip_list(root)
+    bad = 0 if skips else 1                          # 样本被删空也算失败，免得自测悄悄变成空跑
+    if not skips:
+        print("🛑 没有「跳过即失败」的红样本")
+    for k in skips:                       # 跳过的文件必须让整次检查判失败
+        with tempfile.TemporaryDirectory() as td:
+            dst = Path(td) / "repo"
+            shutil.copytree(root, dst, ignore=shutil.ignore_patterns(*SKIP_DIRS))
+            f = dst / "red-sample.md"
+            if k["kind"] == "big":
+                f.write_bytes(b"a\n" * (TEXT_LIMIT // 2 + 1))
+            else:                                    # encoding：单独一个 ff 字节就不是合法 UTF-8
+                f.write_bytes(b"see \xff here\n")
+            krc, _ = run(dst, quiet=True, allow_path=allow_path)
+        good = krc == 2
+        bad += not good
+        print(f"{'✅' if good else '🛑'} {k['why']}（期望判失败，实际 rc={krc}）")
     for c in cases:
         got = c["word"].strip(".-_") in unknown         # 候选词是去掉首尾 .-_ 之后的样子
         good = got == c["flagged"]
