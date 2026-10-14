@@ -8,7 +8,8 @@
 
 用法
     python check-judgefiles.py --vocab base/vocab.json --paths 改动清单.txt \
-        --action synchronize --sender 某账号 [--label 标签名] [--owner Bosons-cyber]
+        --action synchronize --sender 某账号 [--label 标签名] [--owner Bosons-cyber] \
+        [--expected-count N]
     python check-judgefiles.py --red base/tests/red/judgefiles.json --target pr/scripts/check-judgefiles.py
 
 路径清单
@@ -20,6 +21,9 @@
     - 只有「这次事件是加标签、标签名是 multi-sensitive、操作人是所有者账号」才通过；
     - 其余事件（新开、推新提交、重新打开、去标签……）一律不通过，不管 PR 上现在挂着什么标签。
     推新提交会产生新的头提交，之前那次通过不会带过来；所有者要先去掉再重新加一次标签。
+
+CI 必须传 --expected-count（取 PR 的 changed_files）；本地自用可省略。
+路径清单为空、不是列表（如接口报错对象）、列表项类型不对，一律按输入无效退出 2，不放行。
 
 退出码：0 = 通过；1 = 不通过（--red 时为有样本没过）；2 = 输入无效。
 """
@@ -50,22 +54,38 @@ def hits(path: str, rules: list[str]) -> bool:
 
 
 def load_paths(text: str) -> list[str]:
+    """读改动路径清单；格式不对一律抛 ValueError（按输入无效处理，不放行）。"""
     text = text.strip()
     if not text:
-        return []
+        raise ValueError("改动路径清单为空")
     out: list[str] = []
-    if text[0] == "[":
-        for f in json.loads(text):
-            if isinstance(f, str):
-                out.append(f)
-            else:
-                out.append(f["filename"])
-                if f.get("previous_filename"):
-                    out.append(f["previous_filename"])
+    if text[0] in "[{":
+        data = json.loads(text)
+        if not isinstance(data, list) or not data:
+            raise ValueError("改动路径清单必须是非空 JSON 列表（可能拿到的是接口报错）")
+        for f in data:
+            if not isinstance(f, dict) or not isinstance(f.get("filename"), str) or not f["filename"].strip():
+                raise ValueError(f"列表项必须是带字符串 filename 的对象：{f!r}")
+            old = f.get("previous_filename")
+            if old is not None and not isinstance(old, str):
+                raise ValueError(f"previous_filename 必须是字符串：{f!r}")
+            out.append(f["filename"])
+            if old:
+                out.append(old)
         return out
     for line in text.splitlines():
         out.extend(x for x in line.split("\t") if x.strip())
+    if not out:
+        raise ValueError("改动路径清单为空")
     return out
+
+
+def count_items(text: str) -> int:
+    """清单里的文件条数（改名算一条），用来和 PR 的 changed_files 对数。"""
+    text = text.strip()
+    if text[0] == "[":
+        return len(json.loads(text))
+    return sum(1 for line in text.splitlines() if line.strip())
 
 
 def decide(rules, paths, action, s, mark, o):
@@ -96,6 +116,8 @@ def run_red(red: Path, target: Path) -> int:
             cmd = [sys.executable, str(target), "--vocab", str(vp), "--paths", str(pp),
                    "--action", c.get("action", ""), "--sender", c.get("sender", ""),
                    "--label", c.get("label", "")]
+            if "count" in c:
+                cmd += ["--expected-count", str(c["count"])]
             r = subprocess.run(cmd, capture_output=True, text=True)
             got = r.returncode == 0
             good = got == c["pass"]
@@ -114,6 +136,7 @@ def main() -> int:
     p.add_argument("--sender", default="", help="触发事件的账号")
     p.add_argument("--label", default="", help="labeled / unlabeled 事件里的标签名")
     p.add_argument("--owner", default="Bosons-cyber", help="可放行的所有者账号")
+    p.add_argument("--expected-count", type=int, help="PR 的 changed_files；CI 必须传，条数对不上或超过 3000 就不通过")
     p.add_argument("--red", help="红样本文件（tests/red/judgefiles.json）")
     p.add_argument("--target", help="配合 --red：被测的脚本，默认测自己")
     a = p.parse_args()
@@ -123,10 +146,19 @@ def main() -> int:
         p.error("需要 --vocab 和 --paths")
     try:
         rules = json.loads(Path(a.vocab).read_text(encoding="utf-8"))["judgefiles"]["paths"]
-        paths = load_paths(Path(a.paths).read_text(encoding="utf-8"))
+        raw = Path(a.paths).read_text(encoding="utf-8")
+        paths = load_paths(raw)
+        n = count_items(raw)
     except Exception as e:
         print(f"输入无效：{e}", file=sys.stderr)
         return 2
+    if a.expected_count is not None:
+        if a.expected_count > 3000:
+            print(f"❌ PR 改了 {a.expected_count} 个文件，超过接口上限 3000，清单拿不全，不通过")
+            return 1
+        if n != a.expected_count:
+            print(f"❌ 改动路径清单有 {n} 条，PR 实际改了 {a.expected_count} 个文件，对不上，不通过")
+            return 1
     good, touched, msg = decide(rules, paths, a.action, a.sender, a.label, a.owner)
     print(("✅ " if good else "❌ ") + msg)
     for t in touched:

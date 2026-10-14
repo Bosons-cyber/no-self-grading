@@ -1,18 +1,25 @@
 {
   "_comment": "判据文件个数检查的红样本（判据文件）。CI 从 main 取这份样本和 main 上的 check-judgefiles.py，去测 PR 里那份脚本。改它要单开 PR，由所有者批。样本里的账号都是占位符，只有 Bosons-cyber 是所有者。",
   "rules": ["vocab.json", "scripts/", "tests/red/", ".github/workflows/"],
+  "_format": "paths 原样写进清单文件；可选 count 当作 PR 的改动文件数传入。",
   "cases": [
-    {"why": "不碰判据文件，通过", "pass": true, "action": "opened", "paths": ["README.md"]},
-    {"why": "只碰一个判据文件，通过", "pass": true, "action": "synchronize", "paths": ["scripts/a.py", "README.md"]},
-    {"why": "同一个文件写法不同只算一个", "pass": true, "action": "opened", "paths": ["vocab.json", "./vocab.json"]},
-    {"why": "前缀相似但不在目录下，不能误配", "pass": true, "action": "opened", "paths": ["docs/scripts/a.py", "README.md"]},
-    {"why": "大小写和反斜杠先统一再比，两个就报", "pass": false, "action": "opened", "paths": ["Scripts\\A.py", "Tests\\Red\\x.json"]},
+    {"why": "不碰判据文件，通过", "pass": true, "action": "opened", "paths": [{"filename": "README.md"}]},
+    {"why": "只碰一个判据文件，通过", "pass": true, "action": "synchronize", "paths": [{"filename": "scripts/a.py"}, {"filename": "README.md"}]},
+    {"why": "同一个文件写法不同只算一个", "pass": true, "action": "opened", "paths": [{"filename": "vocab.json"}, {"filename": "./vocab.json"}]},
+    {"why": "前缀相似但不在目录下，不能误配", "pass": true, "action": "opened", "paths": [{"filename": "docs/scripts/a.py"}, {"filename": "README.md"}]},
+    {"why": "大小写和反斜杠先统一再比，两个就报", "pass": false, "action": "opened", "paths": [{"filename": "Scripts\\A.py"}, {"filename": "Tests\\Red\\x.json"}]},
     {"why": "改名时新旧路径都算", "pass": false, "action": "opened", "paths": [{"filename": "docs/x.py", "previous_filename": "scripts/x.py"}, {"filename": "vocab.json"}]},
-    {"why": "两个判据文件、新开 PR，不通过", "pass": false, "action": "opened", "paths": ["vocab.json", "scripts/a.py"]},
-    {"why": "两个判据文件、推了新提交，即使挂着标签也不通过", "pass": false, "action": "synchronize", "sender": "Bosons-cyber", "label": "multi-sensitive", "paths": ["vocab.json", "scripts/a.py"]},
-    {"why": "所有者亲手加 multi-sensitive，通过", "pass": true, "action": "labeled", "sender": "Bosons-cyber", "label": "multi-sensitive", "paths": ["vocab.json", "scripts/a.py"]},
-    {"why": "不是所有者加的标签，不通过", "pass": false, "action": "labeled", "sender": "other", "label": "multi-sensitive", "paths": ["vocab.json", "scripts/a.py"]},
-    {"why": "所有者加的是别的标签，不通过", "pass": false, "action": "labeled", "sender": "Bosons-cyber", "label": "other", "paths": ["vocab.json", "scripts/a.py"]},
-    {"why": "去掉标签，不通过", "pass": false, "action": "unlabeled", "sender": "Bosons-cyber", "label": "multi-sensitive", "paths": ["vocab.json", "scripts/a.py"]}
+    {"why": "两个判据文件、新开 PR，不通过", "pass": false, "action": "opened", "paths": [{"filename": "vocab.json"}, {"filename": "scripts/a.py"}]},
+    {"why": "两个判据文件、推了新提交，即使挂着标签也不通过", "pass": false, "action": "synchronize", "sender": "Bosons-cyber", "label": "multi-sensitive", "paths": [{"filename": "vocab.json"}, {"filename": "scripts/a.py"}]},
+    {"why": "所有者亲手加 multi-sensitive，通过", "pass": true, "action": "labeled", "sender": "Bosons-cyber", "label": "multi-sensitive", "paths": [{"filename": "vocab.json"}, {"filename": "scripts/a.py"}]},
+    {"why": "不是所有者加的标签，不通过", "pass": false, "action": "labeled", "sender": "other", "label": "multi-sensitive", "paths": [{"filename": "vocab.json"}, {"filename": "scripts/a.py"}]},
+    {"why": "所有者加的是别的标签，不通过", "pass": false, "action": "labeled", "sender": "Bosons-cyber", "label": "other", "paths": [{"filename": "vocab.json"}, {"filename": "scripts/a.py"}]},
+    {"why": "去掉标签，不通过", "pass": false, "action": "unlabeled", "sender": "Bosons-cyber", "label": "multi-sensitive", "paths": [{"filename": "vocab.json"}, {"filename": "scripts/a.py"}]},
+    {"why": "拿到的是接口报错对象，不通过", "pass": false, "action": "opened", "paths": {"message": "Not Found"}},
+    {"why": "改动路径清单为空，不通过", "pass": false, "action": "opened", "paths": []},
+    {"why": "列表项类型不对，不通过", "pass": false, "action": "opened", "paths": [{"filename": 1}]},
+    {"why": "条数和 PR 的改动文件数对不上，不通过", "pass": false, "action": "opened", "count": 2, "paths": [{"filename": "README.md"}]},
+    {"why": "条数对得上，通过", "pass": true, "action": "opened", "count": 1, "paths": [{"filename": "README.md"}]},
+    {"why": "改动文件超过 3000 个，清单拿不全，不通过", "pass": false, "action": "opened", "count": 3001, "paths": [{"filename": "README.md"}]}
   ]
 }
