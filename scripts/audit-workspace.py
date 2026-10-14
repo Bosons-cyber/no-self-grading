@@ -428,6 +428,8 @@ def check_vocab(v: dict) -> list[str]:
         if not c.get("not"):
             issues.append(f"{cid}：缺「不是什么」，边界没定")
         label = _vocab_key(str(c.get("label") or cid))
+        if label in label_owner and label_owner[label] != cid:
+            issues.append(f"正式名 {label!r} 同时被 {label_owner[label]} 和 {cid} 使用")
         label_owner.setdefault(label, cid)
         for a in c.get("alt_labels") or []:
             key = _vocab_key(str(a))
