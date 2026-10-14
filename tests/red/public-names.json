@@ -1,5 +1,5 @@
 {
-  "_comment": "public-names 哈希豁免的红样本（判据文件）。--self-test 读这份样本：按 len 拼出十六进制串（upper 为 true 时转大写，prefix 贴在前面），写进临时副本再扫，看是否被报。正文不直接写进这里，免得本文件自己命中。改它要单开 PR，由所有者批。",
+  "_comment": "public-names 哈希豁免的红样本（判据文件）。--self-test 读这份样本：按 len 拼出十六进制串（upper 为 true 时转大写，prefix 贴在前面，suffix 贴在后面），写进临时副本再扫，看是否被报。正文不直接写进这里，免得本文件自己命中。改它要单开 PR，由所有者批。",
   "cases": [
     {"why": "40 位小写十六进制是哈希，不报", "len": 40, "flagged": false},
     {"why": "64 位小写十六进制是哈希，不报", "len": 64, "flagged": false},
@@ -10,6 +10,9 @@
     {"why": "40 位前面贴着字母，不算独立的哈希，照报", "len": 40, "prefix": "x", "flagged": true},
     {"why": "40 位前面贴着下划线，不算独立的哈希，照报", "len": 40, "prefix": "_", "flagged": true},
     {"why": "40 位大写十六进制不算哈希，照报", "len": 40, "upper": true, "flagged": true},
-    {"why": "短的十六进制串（如 10 位）照查", "len": 10, "flagged": true}
+    {"why": "短的十六进制串（如 10 位）照查", "len": 10, "flagged": true},
+    {"why": "40 位后面贴着字母，不算独立的哈希，照报", "len": 40, "suffix": "x", "flagged": true},
+    {"why": "40 位后面贴着下划线，不算独立的哈希，照报", "len": 40, "suffix": "_", "flagged": true},
+    {"why": "80 位小写十六进制不是哈希长度，照报", "len": 80, "flagged": true}
   ]
 }
