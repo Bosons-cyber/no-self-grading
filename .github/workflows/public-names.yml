@@ -15,16 +15,16 @@ jobs:
   public-names:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4          # pull_request_target 下检出的是基线，不是 PR
+      - uses: actions/checkout@v5          # pull_request_target 下检出的是基线，不是 PR
         with:
           persist-credentials: false
       - if: github.event_name == 'pull_request_target'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           path: pr
           persist-credentials: false
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
       # 先跑红样本：假代号必须被拦住，拦不住说明闸门本身坏了
