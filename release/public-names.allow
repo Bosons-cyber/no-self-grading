@@ -615,3 +615,6 @@ WITHOUT
 
 # .gitattributes 注释里的通用技术词
 CRLF
+
+# 标签里的词
+multi-sensitive
