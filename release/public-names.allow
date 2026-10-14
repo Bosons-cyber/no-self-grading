@@ -618,3 +618,8 @@ CRLF
 
 # 标签里的词
 multi-sensitive
+
+# 后续添加的
+check-judgefiles
+judgefiles
+previous_filename
