@@ -39,6 +39,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import json
 import os
 import re
 import shutil
@@ -60,8 +61,15 @@ CAMEL_RE = re.compile(r"[a-z][A-Z]|[A-Z]{2,}[a-z]")
 LETTER_RE = re.compile(r"[A-Za-z]")
 
 
+def is_hash(word: str) -> bool:
+    """整段恰好是 40 或 64 位小写十六进制（两侧不贴字母、数字、下划线）⇒ 是哈希，不算名字。"""
+    return bool(re.fullmatch(r"[0-9a-f]{40}|[0-9a-f]{64}", word.strip(".-")))   # 只认小写；大写 / 混写照样查
+
+
 def word_candidates(word: str, code: bool) -> list[str]:
     """一个不含 / 的词 ⇒ 0 或 1 个候选。"""
+    if is_hash(word):
+        return []
     w = word.strip(".-_")
     if len(LETTER_RE.findall(w)) < 2:
         return []
@@ -91,6 +99,8 @@ def candidates_in_line(line: str, code: bool) -> list[str]:
         if "/" in tok and not tok.startswith(("http://", "https://")) and "//" not in tok:
             for seg in tok.split("/"):
                 if not seg or seg in (".", ".."):
+                    continue
+                if is_hash(seg):
                     continue
                 s = seg.strip(".-_")
                 m = EXT_RE.search(s)
@@ -193,16 +203,38 @@ def run(root: Path, list_only: bool = False, quiet: bool = False,
     return (1 if unknown else 0), set(unknown)
 
 
+def red_hash_cases(root: Path) -> list[dict]:
+    """读哈希红样本；样本里只写长度和大小写，正文由这里拼出来，免得样本文件自己命中。"""
+    p = root / "tests/red/public-names.json"
+    if not p.is_file():
+        return []
+    out = []
+    for i, c in enumerate(json.loads(p.read_text(encoding="utf-8"))["cases"]):
+        w = ("".join(f"{n:x}" for n in range(16)) * 6)[i % 16: i % 16 + c["len"]]   # 每条错开，互不重叠
+        if c.get("upper"):
+            w = w.upper()
+        out.append({**c, "word": c.get("prefix", "") + w})
+    return out
+
+
 def self_test(root: Path, allow_path: Path | None = None) -> int:
+    cases = red_hash_cases(root)
     with tempfile.TemporaryDirectory() as td:
         dst = Path(td) / "repo"
         shutil.copytree(root, dst, ignore=shutil.ignore_patterns(*SKIP_DIRS))
-        (dst / "red-sample.md").write_text(f"see `{RED_SAMPLE}` in the example\n", encoding="utf-8")
+        (dst / "red-sample.md").write_text(f"see `{RED_SAMPLE}` in the example\n"
+                                            + "".join(f"see `{c['word']}` here\n" for c in cases), encoding="utf-8")
         rc, unknown = run(dst, quiet=True, allow_path=allow_path)
-    if rc == 1 and RED_SAMPLE in unknown:
+    bad = 0
+    for c in cases:
+        got = c["word"].strip(".-_") in unknown         # 候选词是去掉首尾 .-_ 之后的样子
+        good = got == c["flagged"]
+        bad += not good
+        print(f"{'✅' if good else '🛑'} {c['why']}（期望{'报' if c['flagged'] else '不报'}，实际{'报' if got else '不报'}）")
+    if rc == 1 and RED_SAMPLE in unknown and not bad:
         print(f"✅ 红样本 {RED_SAMPLE} 被拦住了")
         return 0
-    print(f"🛑 红样本 {RED_SAMPLE} **没被拦住**（rc={rc}）—— 闸门失效，拒绝给结论")
+    print(f"🛑 红样本没全过（rc={rc}，{RED_SAMPLE} {'拦住' if RED_SAMPLE in unknown else '没拦住'}，哈希样本错 {bad} 条）—— 闸门失效，拒绝给结论")
     return 2
 
 
