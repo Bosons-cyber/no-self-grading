@@ -397,6 +397,12 @@ def load_vocab(root: Path, cfg: dict) -> tuple[str | None, dict | None, str | No
     return None, None, None
 
 
+def _vocab_key(text: str) -> str:
+    """词表里比较名字用的键。英文按标识符拆词；拆不出英文词元的（比如中文名）就用整串，
+    否则所有中文名都会变成空串，互相误报「撞名」。"""
+    return " ".join(split_identifier(text)) or text.strip().lower()
+
+
 def check_vocab(v: dict) -> list[str]:
     """词表自身的一致性问题（每条一句话）。"""
     issues = []
@@ -421,10 +427,13 @@ def check_vocab(v: dict) -> list[str]:
             issues.append(f"{cid}：缺定义")
         if not c.get("not"):
             issues.append(f"{cid}：缺「不是什么」，边界没定")
-        label = " ".join(split_identifier(str(c.get("label") or cid)))
+        label = _vocab_key(str(c.get("label") or cid))
         label_owner.setdefault(label, cid)
         for a in c.get("alt_labels") or []:
-            key = " ".join(split_identifier(str(a)))
+            key = _vocab_key(str(a))
+            if not key:
+                issues.append(f"{cid}：有空的别名")
+                continue
             if key in alias_owner and alias_owner[key] != cid:
                 issues.append(f"别名 {a!r} 同时挂在 {alias_owner[key]} 和 {cid} 上")
             alias_owner.setdefault(key, cid)
@@ -989,6 +998,39 @@ def render(a: dict) -> None:
             print("  ✅ 没有正式代码引用草稿区")
 
 
+def _issues_from(target: str, vocab: dict) -> list[str] | None:
+    """在单独的子进程里跑被测脚本，词表从标准输入给它，只取它打印的最后一行 JSON。
+    它的退出码不信，读不出结果就算失败。"""
+    try:
+        pre = subprocess.run([sys.executable, target, "--vocab-issues", "-"],
+                           input=json.dumps(vocab, ensure_ascii=False),
+                           capture_output=True, text=True, encoding="utf-8", timeout=60)
+        lines = pre.stdout.strip().splitlines()
+        got = json.loads(lines[-1]) if lines else None
+    except Exception:
+        return None
+    return got if isinstance(got, list) and all(isinstance(x, str) for x in got) else None
+
+
+def run_red(red: str, target: str | None) -> int:
+    """跑词表自检的红样本。CI 用 main 上的本脚本和 main 上的样本，去测 PR 里那份脚本：
+    被测脚本在子进程里跑，只交出结果，由这里比对。这只能抓无心改坏的；
+    故意认出样本、专门凑对输出的改动，要靠所有者审 diff。不给 target 就测本脚本自己。"""
+    cases = json.loads(Path(red).read_text(encoding="utf-8"))["cases"]
+    failed = 0
+    for c in cases:
+        got = _issues_from(target, c["vocab"]) if target else check_vocab(c["vocab"])
+        want = sorted(c["expect"])
+        ok = got is not None and sorted(got) == want
+        failed += not ok
+        print(f"{'✅' if ok else '❌'} {c['why']}")
+        if not ok:
+            print(f"     应报：{want}")
+            print(f"     实报：{got if got is not None else '读不出结果'}")
+    print(f"###GATES vocab_cases={len(cases)} failed={failed}")
+    return 1 if failed or not cases else 0
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="工作区 agent 友好度事实采集（只读）")
     ap.add_argument("--root", default=".")
@@ -996,7 +1038,16 @@ def main() -> int:
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--top", type=int, default=20)
     ap.add_argument("--skip", action="append", default=[], help="额外跳过目录名（可重复）")
+    ap.add_argument("--red", default=None, help="只跑词表自检的红样本，例如 tests/red/vocab.json")
+    ap.add_argument("--target", default=None, help="配合 --red：被测的脚本，默认是本脚本")
+    ap.add_argument("--vocab-issues", default=None, help="只打印这份词表的自检结果（一行 JSON），- 表示从标准输入读，供 --red 调用")
     args = ap.parse_args()
+    if args.vocab_issues:
+        src = open(0, encoding="utf-8").read() if args.vocab_issues == "-" else Path(args.vocab_issues).read_text(encoding="utf-8")
+        print(json.dumps(check_vocab(json.loads(src)), ensure_ascii=False))
+        return 0
+    if args.red:
+        return run_red(args.red, args.target)
 
     root = Path(args.root).resolve()
     if not root.is_dir():

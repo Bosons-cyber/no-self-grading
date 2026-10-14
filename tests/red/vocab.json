@@ -1,0 +1,19 @@
+{
+  "_comment": "词表自检的红样本（判据文件）。CI 从 main 取这份样本和 main 上的 audit-workspace.py，去测 PR 里那份脚本的词表自检。改它要单开 PR，由所有者批。",
+  "cases": [
+    {
+      "why": "中文别名挂在两个概念上、中文别名撞上别人的正式名，都必须报出来",
+      "expect": ["别名 '阿' 同时挂在 a 和 b 上", "b 的别名 '甲' 撞上了 a 的正式名"],
+      "vocab": {"version": "0.1.0", "concepts": [
+        {"id": "a", "label": "甲", "alt_labels": ["阿"], "definition": "x", "not": ["y"]},
+        {"id": "b", "label": "乙", "alt_labels": ["阿", "甲"], "definition": "x", "not": ["y"]}]}
+    },
+    {
+      "why": "互不相同的中文名不能误报",
+      "expect": [],
+      "vocab": {"version": "0.1.0", "concepts": [
+        {"id": "a", "label": "甲", "alt_labels": ["阿"], "definition": "x", "not": ["y"]},
+        {"id": "b", "label": "乙", "alt_labels": ["丙"], "definition": "x", "not": ["y"]}]}
+    }
+  ]
+}
