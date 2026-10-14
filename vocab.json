@@ -84,17 +84,16 @@
   "retired": [],
   "judgefiles": {
     "_comment": "判据文件（concept: judgefile）的路径清单，供 PR 检查按路径标「需细看」。只做提示、宁多报不漏报；某处改动算不算放宽，仍由所有者看完整差异后定（见 concept: loosening）。改这份清单本身也算改判据文件。",
-    "match": "路径先统一大小写和斜杠再比对；以 / 结尾的是目录，目录下新加的文件也算；改名或移动时新旧两个路径都算。",
+    "match": "路径先统一大小写和斜杠再比对；以 / 结尾的项按前缀匹配（是目录，目录下现有和新加的文件都算）；改名或移动时新旧两个路径都算。",
     "unit": "按文件计：一个 PR 最多碰 1 个判据文件；超过就拆开，或由所有者亲手加 multi-sensitive 标签放行（加标签的人须是所有者账号，标签之后有新提交即作废）。",
     "paths": [
       ".github/workflows/",
       ".github/CODEOWNERS",
+      ".gitattributes",
       "vocab.json",
       "tests/red/",
-      "release/public-names.allow",
-      "release/public-names.py",
-      "scripts/audit-workspace.py",
-      "scripts/verify-refs.py",
+      "release/",
+      "scripts/",
       ".agent-ready.json",
       "assets/templates/vocab.json",
       "assets/templates/agent-ready.json",
@@ -134,7 +133,7 @@
       },
       {
         "id": "BIG_DIR_MB",
-        "file": "scripts/audit-workspace.py",
+        "file": "scripts/",
         "value": 30,
         "stricter": "smaller",
         "gate": false,
@@ -143,7 +142,7 @@
       },
       {
         "id": "DUP_MIN_BYTES",
-        "file": "scripts/audit-workspace.py",
+        "file": "scripts/",
         "value": 256,
         "stricter": "smaller",
         "gate": false,
@@ -152,7 +151,7 @@
       },
       {
         "id": "HASH_MAX_BYTES",
-        "file": "scripts/audit-workspace.py",
+        "file": "scripts/",
         "value": 2097152,
         "stricter": "larger",
         "gate": false,
