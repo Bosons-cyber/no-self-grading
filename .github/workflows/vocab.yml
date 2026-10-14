@@ -1,0 +1,30 @@
+# 词表自检闸门：判据（脚本、红样本）取 main，PR 里的东西只当被测对象和数据
+name: vocab
+on:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  vocab:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: base
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: pr
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # 用 main 的红样本去测 PR 里的检查器，测出改坏就报红
+      - run: python base/scripts/audit-workspace.py --red base/tests/red/vocab.json --target pr/scripts/audit-workspace.py
+      # 用 main 的检查器去查 PR 里的词表，有问题就报红
+      - run: |
+          out=$(python base/scripts/audit-workspace.py --vocab-issues pr/vocab.json)
+          echo "$out"
+          test "$out" = "[]"
