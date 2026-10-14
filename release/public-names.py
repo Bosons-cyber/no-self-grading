@@ -213,7 +213,7 @@ def red_hash_cases(root: Path) -> list[dict]:
         w = ("".join(f"{n:x}" for n in range(16)) * 6)[i % 16: i % 16 + c["len"]]   # 每条错开，互不重叠
         if c.get("upper"):
             w = w.upper()
-        out.append({**c, "word": c.get("prefix", "") + w})
+        out.append({**c, "word": c.get("prefix", "") + w + c.get("suffix", "")})
     return out
 
 
