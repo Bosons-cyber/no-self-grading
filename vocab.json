@@ -102,7 +102,7 @@
     ]
   },
   "thresholds": {
-    "_comment": "闸门脚本里的数值阈值及其方向。stricter 写明往哪边改算收紧；反方向的改动按放宽候选标出。方向是哈基米按代码读出来的，approved=false，待所有者确认。新增阈值不写方向的，一律当「需细看」。",
+    "_comment": "闸门脚本里的数值阈值及其方向。stricter 写明往哪边改算收紧；反方向的改动按放宽候选标出。方向是哈基米按代码读出来的，2026-10-14 经所有者确认。新增阈值不写方向的，一律当「需细看」。",
     "items": [
       {
         "id": "MIN_FILES",
@@ -111,7 +111,7 @@
         "stricter": "larger",
         "gate": true,
         "note": "扫到的文件少于此数时判扫描范围不可信",
-        "approved": false
+        "approved": true
       },
       {
         "id": "TEXT_LIMIT",
@@ -119,8 +119,8 @@
         "value": 2000000,
         "stricter": "larger",
         "gate": true,
-        "note": "单文件读取上限，调小会让更多内容不被扫描；方向待确认",
-        "approved": false
+        "note": "单文件读取上限，调小会让更多内容不被扫描",
+        "approved": true
       },
       {
         "id": "MIN_TRUSTED_FILES",
@@ -129,7 +129,7 @@
         "stricter": "larger",
         "gate": true,
         "note": "同上，扫描范围可信的最小文件数",
-        "approved": false
+        "approved": true
       },
       {
         "id": "BIG_DIR_MB",
@@ -138,7 +138,7 @@
         "stricter": "smaller",
         "gate": false,
         "note": "体检报告用，不拦截",
-        "approved": false
+        "approved": true
       },
       {
         "id": "DUP_MIN_BYTES",
@@ -147,7 +147,7 @@
         "stricter": "smaller",
         "gate": false,
         "note": "体检报告用，不拦截",
-        "approved": false
+        "approved": true
       },
       {
         "id": "HASH_MAX_BYTES",
@@ -156,7 +156,7 @@
         "stricter": "larger",
         "gate": false,
         "note": "体检报告用，不拦截",
-        "approved": false
+        "approved": true
       }
     ]
   }
