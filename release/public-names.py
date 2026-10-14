@@ -251,7 +251,8 @@ def self_test(root: Path, allow_path: Path | None = None) -> int:
             else:                                    # encoding：单独一个 ff 字节就不是合法 UTF-8
                 f.write_bytes(b"see \xff here\n")
             krc, _ = run(dst, quiet=True, allow_path=allow_path)
-        good = krc == 2
+            hit = "red-sample.md" in scan(dst)[2]         # 确认是因为这个文件被跳过才判失败，不是别的原因
+        good = krc == 2 and hit
         bad += not good
         print(f"{'✅' if good else '🛑'} {k['why']}（期望判失败，实际 rc={krc}）")
     for c in cases:
