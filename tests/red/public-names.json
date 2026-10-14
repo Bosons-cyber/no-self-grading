@@ -14,5 +14,9 @@
     {"why": "40 位后面贴着字母，不算独立的哈希，照报", "len": 40, "suffix": "x", "flagged": true},
     {"why": "40 位后面贴着下划线，不算独立的哈希，照报", "len": 40, "suffix": "_", "flagged": true},
     {"why": "80 位小写十六进制不是哈希长度，照报", "len": 80, "flagged": true}
+  ],
+  "skips": [
+    {"why": "大于 TEXT_LIMIT 的文件没查过，整次检查判失败", "kind": "big"},
+    {"why": "非 UTF-8 的文件没查过，整次检查判失败", "kind": "encoding"}
   ]
 }
