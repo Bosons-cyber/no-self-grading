@@ -12,7 +12,7 @@
         "不是敏感词清单：敏感词清单只在发布前用来查泄露，放在仓库外面，从不进仓库。",
         "文档里不单独说「词表」，要说清是概念词表还是敏感词清单。"
       ],
-      "approved": false
+      "approved": true
     },
     {
       "id": "gate",
@@ -23,7 +23,7 @@
         "不是提示类的计数器或报告：只报数不拦截的，最多算影子模式里的检查，还不是闸门。",
         "不是 agent 自己跑一遍说通过就算：只认从 main 取脚本、在受保护流程里跑出的结果。"
       ],
-      "approved": false
+      "approved": true
     },
     {
       "id": "redsample",
@@ -34,7 +34,7 @@
         "不是普通回归测试：回归测试证明好的输入能过，红样本证明坏的输入过不去。",
         "不是真实的攻击载荷：只用合成的占位内容，比如编出来的假代号。"
       ],
-      "approved": false
+      "approved": true
     },
     {
       "id": "judgefile",
@@ -45,7 +45,7 @@
         "不是被判的代码和文档本身。",
         "归所有者，不归写代码的 agent：agent 可以在 PR 里提议改，但不经所有者批准合不进 main。"
       ],
-      "approved": false
+      "approved": true
     },
     {
       "id": "loosening",
@@ -56,7 +56,7 @@
         "不是收紧：放宽和收紧分开批，一个 PR 里的修复不能顺带放宽。",
         "不靠计数器判断：计数器只是提示，每处判据改动是不是放宽，由所有者看完整差异后定。"
       ],
-      "approved": false
+      "approved": true
     },
     {
       "id": "mergeable",
@@ -66,7 +66,7 @@
       "not": [
         "不等于能不经批准进 main：只是能点按钮，本身不扣分。"
       ],
-      "approved": false
+      "approved": true
     },
     {
       "id": "unapproved",
@@ -78,7 +78,7 @@
         "第 10 维的「通过」只表示 references/remote-platforms.md 当前版本里的四条都查过了、都满足，不表示确实没有路可走；报告里要写明查的是哪一版清单。",
         "agent 查不到的项记成「没查」，交给所有者确认，不能当成通过。"
       ],
-      "approved": false
+      "approved": true
     }
   ],
   "retired": [],
